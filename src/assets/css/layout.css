@@ -1,0 +1,276 @@
+/* 🌐 Classic Store - Modern Red Edition 2025 */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", "Segoe UI", sans-serif;
+  background-color: #fdfdfd;
+  color: #222;
+  scroll-behavior: smooth;
+}
+
+/* ---------------- HEADER ---------------- */
+.header {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+  padding: 16px 60px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(178, 45, 48, 0.08);
+}
+
+/* Khi cuộn trang header thu nhỏ */
+.header.shrink {
+  padding: 8px 60px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 14px rgba(178, 45, 48, 0.15);
+}
+
+/* ---------------- BANNER ---------------- */
+.banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  height: 90px;
+}
+
+/* --- MENU TRÁI --- */
+.nav-list {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #b22d30;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-link:hover {
+  background-color: #b22d30;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(178, 45, 48, 0.25);
+}
+
+/* --- LOGO GIỮA --- */
+.logo-center {
+  flex: 1;
+  text-align: center;
+}
+
+.logo {
+  width: 200px;
+  height: auto;
+  transition: transform 0.4s ease, filter 0.3s ease;
+  cursor: pointer;
+  filter: drop-shadow(0 2px 6px rgba(178, 45, 48, 0.25));
+}
+
+.logo:hover {
+  transform: scale(1.07);
+  filter: drop-shadow(0 4px 12px rgba(178, 45, 48, 0.4));
+}
+
+/* --- TÌM KIẾM PHẢI --- */
+.search-box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.search-input {
+  padding: 9px 15px;
+  width: 240px;
+  border: 1px solid #ddd;
+  border-radius: 30px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: #fff;
+}
+
+.search-input:focus {
+  border-color: #b22d30;
+  box-shadow: 0 0 6px rgba(178, 45, 48, 0.35);
+}
+
+/* ---------------- MENUBAR ---------------- */
+.menubar {
+  background: linear-gradient(90deg, #b22d30, #a32729, #8f2326);
+  padding: 10px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menu-item {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  position: relative;
+  transition: all 0.25s ease;
+  margin-right: 16px;
+}
+
+.menu-item::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #fff;
+  transition: width 0.3s ease;
+}
+
+.menu-item:hover {
+  color: #fff8f8;
+  transform: translateY(-2px);
+}
+
+.menu-item:hover::after {
+  width: 100%;
+}
+
+/* --- Đăng nhập / Đăng xuất --- */
+.login-link,
+.logout-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.login-link:hover,
+.logout-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(255, 255, 255, 0.25);
+}
+
+.username {
+  color: #fff;
+  font-weight: 600;
+  margin-right: 12px;
+}
+
+/* ---------------- MAIN CONTENT ---------------- */
+.main-content {
+  flex: 1;
+  padding: 60px 100px;
+  background-color: #fff;
+  animation: fadeIn 0.8s ease-in;
+}
+
+/* ---------------- FOOTER ---------------- */
+.footer {
+  background-color: #8f2326;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+  font-size: 14.5px;
+  letter-spacing: 0.4px;
+  border-top: 4px solid #b22d30;
+  box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------------- ANIMATION ---------------- */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+@media (max-width: 992px) {
+  .banner {
+    flex-direction: column;
+    gap: 10px;
+    height: auto;
+    padding: 10px 0;
+  }
+
+  .nav-list {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .search-input {
+    width: 200px;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    padding: 10px 25px;
+  }
+
+  .main-content {
+    padding: 25px;
+  }
+
+  .menubar {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    border-radius: 0;
+  }
+
+  .menu-item {
+    font-size: 14px;
+  }
+
+  .search-input {
+    width: 160px;
+  }
+  /* ---------------- GIỎ HÀNG ---------------- */
+  .nav-link[href="/cart"] {
+    background-color: #b22d30;
+    color: #fff;
+    border-radius: 30px;
+    padding: 8px 18px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .nav-link[href="/cart"]:hover {
+    background-color: #8f2326;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 10px rgba(178, 45, 48, 0.3);
+  }
+}
