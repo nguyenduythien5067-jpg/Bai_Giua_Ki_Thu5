@@ -26,6 +26,28 @@ const ProductDetail = () => {
     fetchProduct();
   }, [id]);
 
+  // 🛒 Thêm vào giỏ hàng
+  const addToCart = () => {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const index = cart.findIndex((item) => item.id === product.id);
+
+    if (index !== -1) {
+      cart[index].quantity += 1;
+    } else {
+      cart.push({
+        id: product.id,
+        name: product.title,
+        price: product.price,
+        image: product.image,
+        quantity: 1,
+      });
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Đã thêm vào giỏ hàng!");
+  };
+
   if (!product) {
     return (
       <div style={{ textAlign: "center", marginTop: "40px" }}>
@@ -69,7 +91,7 @@ const ProductDetail = () => {
           alignItems: "flex-start",
         }}
       >
-        {/* Hình ảnh sản phẩm */}
+        {/* Ảnh sản phẩm */}
         <div
           style={{
             flex: "1 1 300px",
@@ -93,7 +115,7 @@ const ProductDetail = () => {
           />
         </div>
 
-        {/* Thông tin chi tiết */}
+        {/* Thông tin */}
         <div style={{ flex: "1 1 300px" }}>
           <h2 style={{ marginBottom: "10px" }}>{product.title}</h2>
           <p
@@ -127,7 +149,7 @@ const ProductDetail = () => {
               borderRadius: "6px",
               cursor: "pointer",
             }}
-            onClick={() => alert("Đã thêm vào giỏ hàng!")}
+            onClick={addToCart}
           >
             🛒 Thêm vào giỏ hàng
           </button>
