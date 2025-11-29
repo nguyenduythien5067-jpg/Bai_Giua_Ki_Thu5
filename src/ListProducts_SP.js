@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "./supabaseClient";
 
@@ -7,71 +7,105 @@ const ListProducts_SP = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
+  const sliderRef = useRef(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
       const { data } = await supabase.from("product1").select("*");
       if (!data) return;
-
       setListProduct(data);
 
       const highlights = [...data]
         .sort((a, b) => b.rating_rate - a.rating_rate)
-        .slice(0, 4);
-
+        .slice(0, 4); // top 4 sản phẩm nổi bật
       setFeaturedProducts(highlights);
     };
     fetchProducts();
   }, []);
 
+  // Slider tự động
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % featuredProducts.length);
+      handleNext();
     }, 4000);
-
     return () => clearInterval(interval);
-  }, [featuredProducts]);
+  }, [featuredProducts, currentIndex]);
+
+  // Scroll slider
+  useEffect(() => {
+    if (sliderRef.current) {
+      sliderRef.current.style.transform = `translateX(-${currentIndex * 100}%)`;
+    }
+  }, [currentIndex]);
+
+  const handlePrev = () => {
+    setCurrentIndex((prev) =>
+      prev === 0 ? featuredProducts.length - 1 : prev - 1
+    );
+  };
+
+  const handleNext = () => {
+    setCurrentIndex((prev) =>
+      featuredProducts.length ? (prev + 1) % featuredProducts.length : 0
+    );
+  };
 
   return (
     <div style={styles.container}>
+      {/* Featured Products */}
       <h2 style={styles.sectionTitle}>🔥 Sản phẩm nổi bật</h2>
-      <div style={styles.featuredWrapper}>
-        {featuredProducts.map((p, index) => (
-          <div
-            key={p.id}
-            style={{
-              ...styles.featuredCard,
-              opacity: index === currentIndex ? 1 : 0,
-              zIndex: index === currentIndex ? 5 : 1,
-            }}
-            onClick={() => navigate(`/detail/${p.id}`)}
-          >
-            <div style={styles.featuredImageWrapper}>
+      <div style={styles.sliderOuter}>
+        <div style={styles.sliderInner} ref={sliderRef}>
+          {featuredProducts.map((p) => (
+            <div
+              key={p.id}
+              style={styles.featuredCard}
+              onClick={() => navigate(`/detail/${p.id}`)}
+            >
               <img src={p.image} alt={p.title} style={styles.featuredImage} />
-            </div>
-            <div style={styles.featuredContent}>
               <h4 style={styles.featuredName}>{p.title}</h4>
               <p style={styles.featuredPrice}>${p.price}</p>
-              <small style={{ color: "#666" }}>
-                ⭐ {p.rating_rate} | {p.rating_count} đánh giá
+              <small style={styles.rating}>
+                ⭐ {p.rating_rate} ({p.rating_count})
               </small>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        {/* Prev/Next buttons */}
+        <button style={styles.prevBtn} onClick={handlePrev}>
+          ❮
+        </button>
+        <button style={styles.nextBtn} onClick={handleNext}>
+          ❯
+        </button>
+
+        {/* Indicator dots */}
+        <div style={styles.dotsContainer}>
+          {featuredProducts.map((_, idx) => (
+            <span
+              key={idx}
+              style={{
+                ...styles.dot,
+                backgroundColor:
+                  idx === currentIndex ? "#f77f00" : "rgba(255,255,255,0.4)",
+              }}
+              onClick={() => setCurrentIndex(idx)}
+            ></span>
+          ))}
+        </div>
       </div>
 
+      {/* All Products */}
       <h2 style={styles.sectionTitle}>📦 Tất cả sản phẩm</h2>
       <div style={styles.grid}>
         {listProduct.map((p) => (
           <div
             key={p.id}
             style={styles.card}
-            className="card-hover"
             onClick={() => navigate(`/detail/${p.id}`)}
           >
-            <div style={styles.imageWrapper}>
-              <img src={p.image} alt={p.title} style={styles.image} />
-            </div>
+            <img src={p.image} alt={p.title} style={styles.image} />
             <h4 style={styles.name}>{p.title}</h4>
             <p style={styles.price}>${p.price}</p>
             <small style={styles.rating}>
@@ -86,83 +120,143 @@ const ListProducts_SP = () => {
 
 const styles = {
   container: {
-    padding: "25px 40px",
+    padding: "35px 45px",
     fontFamily: "Segoe UI, Roboto, sans-serif",
-    background: "#f6f7fb",
+    background: "#121214",
+    color: "#eee",
   },
   sectionTitle: {
-    fontSize: "1.8rem",
+    fontSize: "1.7rem",
     fontWeight: "700",
-    margin: "20px 0 15px",
-    color: "#333",
+    margin: "22px 0 18px",
+    color: "#fff",
   },
-  featuredWrapper: {
-    position: "relative",
+
+  // Slider
+  sliderOuter: {
     width: "100%",
-    height: "320px",
     overflow: "hidden",
+    borderRadius: "16px",
+    marginBottom: "35px",
+    height: "300px",
+    position: "relative",
+  },
+  sliderInner: {
+    display: "flex",
+    transition: "transform 0.8s ease-in-out",
+    width: "100%",
   },
   featuredCard: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    background: "#fff",
-    borderRadius: "20px",
-    padding: "14px",
-    boxShadow: "0 6px 20px rgba(0,0,0,0.12)",
-    cursor: "pointer",
+    minWidth: "100%",
+    background: "#1e1e23",
+    borderRadius: "12px",
+    padding: "12px",
     textAlign: "center",
-    transition: "opacity 1s ease-in-out, transform 0.4s ease",
+    boxShadow: "0 6px 20px rgba(0,0,0,0.5)",
+    cursor: "pointer",
   },
-  featuredImageWrapper: {
+  featuredImage: {
     width: "100%",
-    height: "200px",
-    borderRadius: "16px",
-    overflow: "hidden",
-    marginBottom: "12px",
+    height: "220px",
+    objectFit: "contain",
+    borderRadius: "10px",
+    marginBottom: "10px",
   },
-  featuredImage: { width: "100%", height: "100%", objectFit: "cover" },
-  featuredContent: { marginTop: "10px" },
-  featuredName: { margin: "5px 0", fontSize: "1.2rem", fontWeight: "600" },
-  featuredPrice: { fontSize: "1.2rem", fontWeight: "700", color: "#e63946" },
+  featuredName: {
+    fontSize: "1.1rem",
+    fontWeight: "600",
+    color: "#ffb997",
+    marginBottom: "5px",
+  },
+  featuredPrice: {
+    fontSize: "1.15rem",
+    fontWeight: "700",
+    color: "#f77f00",
+    marginBottom: "5px",
+  },
+  rating: { color: "#aaa", fontSize: "0.9rem" },
+
+  // Prev/Next buttons
+  prevBtn: {
+    position: "absolute",
+    top: "50%",
+    left: "10px",
+    transform: "translateY(-50%)",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    border: "none",
+    color: "#fff",
+    fontSize: "1.8rem",
+    borderRadius: "50%",
+    width: "40px",
+    height: "40px",
+    cursor: "pointer",
+    zIndex: 5,
+  },
+  nextBtn: {
+    position: "absolute",
+    top: "50%",
+    right: "10px",
+    transform: "translateY(-50%)",
+    backgroundColor: "rgba(0,0,0,0.4)",
+    border: "none",
+    color: "#fff",
+    fontSize: "1.8rem",
+    borderRadius: "50%",
+    width: "40px",
+    height: "40px",
+    cursor: "pointer",
+    zIndex: 5,
+  },
+
+  // Indicator dots
+  dotsContainer: {
+    position: "absolute",
+    bottom: "10px",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    gap: "8px",
+  },
+  dot: {
+    width: "12px",
+    height: "12px",
+    borderRadius: "50%",
+    cursor: "pointer",
+    transition: "0.3s",
+  },
+
+  // Grid sản phẩm
   grid: {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fill, minmax(230px, 1fr))",
+    gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))",
     gap: "22px",
-    marginTop: "25px",
   },
   card: {
-    background: "#fff",
-    borderRadius: "18px",
-    padding: "15px",
-    boxShadow: "0 4px 15px rgba(0,0,0,0.08)",
-    cursor: "pointer",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+    background: "#1e1e23",
+    borderRadius: "12px",
+    padding: "12px",
     textAlign: "center",
+    boxShadow: "0 6px 18px rgba(0,0,0,0.5)",
+    cursor: "pointer",
   },
-  imageWrapper: {
+  image: {
     width: "100%",
-    height: "200px",
-    borderRadius: "16px",
-    overflow: "hidden",
-    marginBottom: "12px",
+    height: "160px",
+    objectFit: "cover",
+    borderRadius: "10px",
   },
-  image: { width: "100%", height: "100%", objectFit: "cover" },
   name: {
-    fontSize: "1rem",
+    color: "#ffd6a5",
     fontWeight: "600",
-    color: "#333",
-    marginBottom: "6px",
+    margin: "6px 0",
+    fontSize: "1rem",
   },
   price: {
-    fontSize: "1.1rem",
+    color: "#f77f00",
     fontWeight: "700",
-    color: "#d62828",
     marginBottom: "4px",
+    fontSize: "1.05rem",
   },
-  rating: { color: "#777" },
 };
 
 export default ListProducts_SP;
