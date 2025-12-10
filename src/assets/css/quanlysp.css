@@ -1,195 +1,219 @@
-/* ===== Body & Container ===== */
+/* =========================================
+   GLOBAL SETTINGS – GIAO DIỆN PREMIUM 2025
+========================================= */
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: #e9ecef;
+  font-family: "Inter", "Segoe UI", Tahoma, sans-serif;
+  background: linear-gradient(180deg, #eef2f7, #f8f9fb);
   margin: 0;
   padding: 0;
-  color: #333;
+  color: #2a2a2a;
+  letter-spacing: 0.2px;
 }
 
 .container {
-  max-width: 950px;
-  margin: 50px auto;
+  max-width: 1050px;
+  margin: 40px auto;
   background: #ffffff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  padding: 36px;
+  border-radius: 18px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.07);
+  animation: fadeIn 0.4s ease;
+  border: 1px solid #e5e8ee;
 }
 
-.container:hover {
-  transform: translateY(-3px);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* ===== Headings ===== */
+/* =========================================
+   HEADINGS — ĐẸP HƠN & NỔI BẬT HƠN
+========================================= */
 h2 {
   margin-top: 0;
-  color: #2c3e50;
-  font-size: 1.8rem;
-  border-bottom: 2px solid #007bff;
-  padding-bottom: 8px;
+  font-size: 2.2rem;
+  color: #163c77;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  padding-bottom: 12px;
+  border-bottom: 3px solid #1a73e8;
 }
 
-/* ===== Table Actions ===== */
-.table-actions {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 15px;
+/* =========================================
+   BUTTONS – PHIÊN BẢN MƯỢT HƠN
+========================================= */
+.btn {
+  padding: 12px 22px;
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 650;
+  border: none;
+  cursor: pointer;
+  transition: 0.28s ease;
+  color: #fff;
 }
 
-.table-actions .btn {
-  font-weight: bold;
-  letter-spacing: 0.5px;
-  transition: all 0.2s ease;
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
+  opacity: 0.9;
 }
 
-.table-actions .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.btn.green {
+  background: linear-gradient(90deg, #2ecc71, #27ae60);
+}
+.btn.red {
+  background: linear-gradient(90deg, #e74c3c, #c0392b);
+}
+.btn.yellow {
+  background: linear-gradient(90deg, #f4d03f, #f1c40f);
+  color: #333;
+}
+.btn.blue {
+  background: linear-gradient(90deg, #1a73e8, #155bb5);
+}
+.btn.gray {
+  background: linear-gradient(90deg, #95a5a6, #7f8c8d);
 }
 
-/* ===== Table Styling ===== */
+/* =========================================
+   TABLE – PREMIUM DASHBOARD STYLE
+========================================= */
 .product-table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
+  margin-top: 24px;
   overflow: hidden;
-}
-
-.product-table th,
-.product-table td {
-  padding: 12px 15px;
-  text-align: left;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .product-table th {
-  background: #007bff;
+  background: linear-gradient(90deg, #1a73e8, #155bb5);
   color: #fff;
-  font-weight: 600;
-  font-size: 0.95rem;
+  padding: 16px;
+  font-size: 1.05rem;
+  text-align: left;
+  font-weight: 700;
 }
 
-.product-table tr {
-  transition: background 0.3s ease, transform 0.2s ease;
+.product-table td {
+  padding: 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #ededed;
+  font-size: 1.02rem;
 }
 
-.product-table tr:nth-child(even) {
-  background: #f8f9fa;
+.product-table tr:nth-child(even) td {
+  background: #f6f8fc;
 }
 
-.product-table tr:hover {
-  background: #e3f2fd;
-  transform: scale(1.01);
+.product-table tr:hover td {
+  background: #e9f1ff;
+  transition: 0.22s;
 }
 
-/* ===== Thumbnails ===== */
+/* =========================================
+   IMAGE THUMBNAIL – ĐẸP HƠN
+========================================= */
 .thumb {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
   object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  transition: transform 0.2s ease;
+  border: 2px solid #d7dfe8;
+  transition: 0.25s ease;
 }
 
 .thumb:hover {
   transform: scale(1.1);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.25);
 }
 
-/* ===== Buttons ===== */
-.btn {
-  border: none;
-  padding: 8px 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  color: #fff;
-  margin-right: 6px;
-  font-size: 0.9rem;
-  transition: all 0.2s ease;
-  font-weight: 500;
-}
-
-.btn.green {
-  background-color: #28a745;
-}
-.btn.red {
-  background-color: #dc3545;
-}
-.btn.yellow {
-  background-color: #ffc107;
-  color: #212529;
-}
-.btn.blue {
-  background-color: #007bff;
-}
-.btn.gray {
-  background-color: #6c757d;
-}
-
-.btn:hover {
-  opacity: 0.85;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-/* ===== Forms ===== */
+/* =========================================
+   FORM V2 – ĐẸP, ĐỀU, KHÔNG LỆCH
+========================================= */
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-top: 15px;
+  margin-top: 25px;
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  row-gap: 22px;
+  column-gap: 20px;
+  align-items: center;
 }
 
 label {
-  display: flex;
-  flex-direction: column;
-  font-weight: 600;
-  color: #495057;
-  font-size: 0.95rem;
+  font-weight: 700;
+  color: #2f4361;
+  font-size: 1.12rem;
+  text-align: right;
+  padding-right: 12px;
 }
 
 input,
 select,
 textarea {
-  padding: 10px;
-  border: 1px solid #ced4da;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid #cbd6e2;
+  border-radius: 12px;
+  font-size: 1.07rem;
+  background: #fcfdff;
+  transition: all 0.25s ease;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+  border-color: #1a73e8;
+  box-shadow: 0 0 8px rgba(26, 115, 232, 0.25);
+  background: #fff;
 }
 
-/* ===== Form Actions ===== */
+/* =========================================
+   ACTION BUTTONS
+========================================= */
 .actions {
+  grid-column: 1 / 3;
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-  margin-top: 15px;
+  gap: 16px;
+  margin-top: 10px;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media (max-width: 900px) {
   .container {
-    margin: 20px;
-    padding: 20px;
+    padding: 26px;
   }
-
-  .product-table th,
-  .product-table td {
-    padding: 10px;
+  h2 {
+    font-size: 1.9rem;
   }
-
   .thumb {
-    width: 50px;
-    height: 50px;
+    width: 65px;
+    height: 65px;
+  }
+}
+
+@media (max-width: 650px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+  label {
+    text-align: left;
+    padding: 0;
+  }
+  .actions {
+    justify-content: center;
   }
 }

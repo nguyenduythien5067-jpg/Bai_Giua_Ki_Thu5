@@ -1,0 +1,150 @@
+/* Vùng tổng */
+.contact-wrapper {
+  width: 100%;
+  padding: 60px 20px;
+  background: #f6f7fb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Header */
+.contact-header {
+  text-align: center;
+  margin-bottom: 40px;
+  max-width: 600px;
+}
+
+.contact-header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #333;
+}
+
+.contact-header p {
+  font-size: 16px;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* Body: 2 cột */
+.contact-body {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 40px;
+  width: 100%;
+  max-width: 1100px;
+}
+
+/* Card thông tin */
+.contact-info-card {
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.6s ease;
+}
+
+.contact-info-card h2 {
+  font-size: 24px;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.info-item span {
+  font-size: 24px;
+}
+
+.info-item p {
+  font-size: 16px;
+  color: #444;
+}
+
+/* Card form */
+.contact-form-card {
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  animation: fadeIn 0.8s ease;
+}
+
+.contact-form-card h2 {
+  font-size: 24px;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* Input */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #7a5af5;
+  box-shadow: 0 0 0 3px rgba(122, 90, 245, 0.2);
+  outline: none;
+}
+
+/* Nút gửi */
+.btn-send {
+  width: 100%;
+  padding: 14px 0;
+  background: #7a5af5;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.btn-send:hover {
+  background: #6847e5;
+  transform: translateY(-2px);
+}
+
+/* Hiệu ứng fade in */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .contact-body {
+    grid-template-columns: 1fr;
+  }
+}

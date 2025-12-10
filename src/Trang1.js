@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "./supabaseClient"; // 🟢 nhớ đổi đúng đường dẫn
+import { supabase } from "./supabaseClient";
+
+const categories = ["Acer", "MacBook", "ASUS", "Lenovo", "MSI", "Vaio"];
 
 const Trang1 = () => {
   const [listProduct, setListProduct] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("Tất cả");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,6 +21,7 @@ const Trang1 = () => {
         if (error) throw error;
 
         setListProduct(data);
+        setFilteredProducts(data); // ban đầu hiển thị tất cả
       } catch (err) {
         console.error("Lỗi Supabase:", err.message);
       }
@@ -25,16 +30,58 @@ const Trang1 = () => {
     fetchProducts();
   }, []);
 
+  // Lọc sản phẩm theo category (title chứa category)
+  useEffect(() => {
+    if (selectedCategory === "Tất cả") {
+      setFilteredProducts(listProduct);
+    } else {
+      setFilteredProducts(
+        listProduct.filter((p) =>
+          p.title.toLowerCase().includes(selectedCategory.toLowerCase())
+        )
+      );
+    }
+  }, [selectedCategory, listProduct]);
+
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>🛍️ Danh sách sản phẩm</h2>
+      <h2 style={styles.title}>🛍️ Sản phẩm theo danh mục</h2>
 
+      {/* Category Filter */}
+      <div style={styles.categoryContainer}>
+        <button
+          onClick={() => setSelectedCategory("Tất cả")}
+          style={{
+            ...styles.categoryButton,
+            backgroundColor: selectedCategory === "Tất cả" ? "#e63946" : "#fff",
+            color: selectedCategory === "Tất cả" ? "#fff" : "#333",
+          }}
+        >
+          Tất cả
+        </button>
+
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            style={{
+              ...styles.categoryButton,
+              backgroundColor: selectedCategory === cat ? "#e63946" : "#fff",
+              color: selectedCategory === cat ? "#fff" : "#333",
+            }}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* Product Grid */}
       <div style={styles.grid}>
-        {listProduct.map((p) => (
+        {filteredProducts.map((p) => (
           <div
             key={p.id}
-            onClick={() => navigate(`/sanpham/${p.id}`)}
             style={styles.card}
+            onClick={() => navigate(`/sanpham/${p.id}`)}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-6px)";
               e.currentTarget.style.boxShadow = "0 10px 20px rgba(0,0,0,0.15)";
@@ -74,6 +121,22 @@ const styles = {
     fontWeight: "700",
     marginBottom: "20px",
     color: "#333",
+  },
+
+  categoryContainer: {
+    display: "flex",
+    gap: "10px",
+    marginBottom: "20px",
+    flexWrap: "wrap",
+  },
+
+  categoryButton: {
+    padding: "8px 16px",
+    borderRadius: "20px",
+    border: "1px solid #e63946",
+    cursor: "pointer",
+    fontWeight: "600",
+    transition: "0.2s",
   },
 
   grid: {

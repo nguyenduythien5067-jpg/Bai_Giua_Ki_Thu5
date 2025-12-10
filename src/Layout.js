@@ -4,17 +4,6 @@ import logo from "./assets/images/logo-ngang.png";
 import "./assets/css/layout.css";
 import { useCart } from "./CartContext";
 
-const PRODUCTS = [
-  "Cà phê sữa đá",
-  "Trà đào cam sả",
-  "Bánh mì thịt",
-  "Bánh ngọt socola",
-  "Trà xanh matcha",
-  "Cà phê đen",
-  "Milo đá",
-  "Smoothie dâu",
-];
-
 const Layout = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -24,19 +13,17 @@ const Layout = () => {
   const [highlightIndex, setHighlightIndex] = useState(-1);
   const searchRef = useRef();
 
-  // Lấy cartItems từ Context
   const { cartItems } = useCart();
 
-  // Tính tổng số lượng sản phẩm
   const totalQuantity = cartItems.reduce(
     (total, item) => total + item.quantity,
     0
   );
 
-  // load user từ localStorage khi mount
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) setUser(JSON.parse(storedUser));
+
     const handleScroll = () => setShrinkHeader(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -123,7 +110,8 @@ const Layout = () => {
                   📞 Liên Hệ
                 </Link>
               </li>
-              {user && (
+              {/* Menu Quản Trị */}
+              {user && user.role === "admin" && (
                 <li>
                   <Link to="/admin/products" className="nav-link">
                     ⚙️ Quản Trị
@@ -140,7 +128,7 @@ const Layout = () => {
             </Link>
           </div>
 
-          {/* Search box */}
+          {/* Search */}
           <div className="search-box fade-in">
             <input
               type="text"
@@ -169,7 +157,7 @@ const Layout = () => {
             )}
           </div>
 
-          {/* User / Cart */}
+          {/* User & Cart */}
           <div className="user-cart fade-in">
             <Link
               to="/cart"
@@ -216,32 +204,77 @@ const Layout = () => {
 
         {/* Menubar */}
         <div className="menubar fade-in">
-          <a href="/menu1" className="menu-item">
-            Menu 1
-          </a>
-          <a href="/menu2" className="menu-item">
-            Menu 2
-          </a>
-          <a href="/menu3" className="menu-item">
-            Menu 3
-          </a>
-          <a href="/menu4" className="menu-item">
-            Menu 4
+          <a href="/order-info" className="menu-item">
+            Thông Tin Đơn Hàng
           </a>
           <a href="/chat" className="menu-item">
-                Chat với AI
-              </a>
+            Chat với AI
+          </a>
         </div>
       </header>
-
-      {/* Main content */}
+      {/* Content */}
       <main className="main-content">
         <Outlet context={{ onLogin: handleLoginUser }} />
       </main>
 
-      {/* Footer */}
+      {/* 🚀 FOOTER MỚI FULL ĐẸP */}
       <footer className="footer fade-in">
-        <p>© 2025 Classic Store — Thiết kế bởi Bạn 🦊</p>
+        <div className="footer-container">
+          <div className="footer-column">
+            <h3>Classic Store</h3>
+            <p>Chất lượng – Uy tín – Tận tâm</p>
+            <p>📍 123 Nguyễn Văn Cừ, TP.HCM</p>
+            <p>📞 0901 234 567</p>
+            <p>✉ classicstore@gmail.com</p>
+          </div>
+
+          <div className="footer-column">
+            <h3>Liên kết nhanh</h3>
+            <ul>
+              <li>
+                <Link to="/">🏠 Trang chủ</Link>
+              </li>
+              <li>
+                <Link to="/trang1">🛍️ Sản phẩm</Link>
+              </li>
+              <li>
+                <Link to="/lien-he">📞 Liên hệ</Link>
+              </li>
+              <li>
+                <Link to="/gioi-thieu">ℹ️ Giới thiệu</Link>
+              </li>
+            </ul>
+          </div>
+
+          <div className="footer-column">
+            <h3>Theo dõi chúng tôi</h3>
+            <div className="social-icons">
+              <a href="#">
+                <span>👍</span> Facebook
+              </a>
+              <a href="#">
+                <span>📸</span> Instagram
+              </a>
+              <a href="#">
+                <span>🎬</span> TikTok
+              </a>
+              <a href="#">
+                <span>💬</span> Zalo
+              </a>
+            </div>
+          </div>
+
+          <div className="footer-column">
+            <h3>Hỗ trợ thanh toán</h3>
+            <div className="payment-icons">
+              💳 Visa | 🏦 ATM | 📱 Momo | 💵 COD
+            </div>
+          </div>
+        </div>
+
+        <div className="footer-bottom">
+          © 2025 Classic Store — Thiết kế bởi Bạn 🦊
+        </div>
       </footer>
     </div>
   );

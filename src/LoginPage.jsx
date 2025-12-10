@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import anhlogo1 from "./assets/images/keylogin.png";
-import { Link } from "react-router-dom";
 import "./assets/css/login.css";
+import { supabase } from "./supabaseClient";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -11,22 +11,49 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { onLogin } = useOutletContext(); // nhận callback từ Layout
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    setTimeout(() => {
-      if (username.trim() && password.trim()) {
-        const userData = { username, role: "user" };
-        localStorage.setItem("user", JSON.stringify(userData));
-        if (onLogin) onLogin(userData); // cập nhật Layout liền
-        alert("✅ Đăng nhập thành công!");
-        navigate("/");
-      } else {
-        alert("❌ Vui lòng nhập đầy đủ thông tin!");
-      }
+    if (!username || !password) {
+      alert("❌ Vui lòng nhập đầy đủ thông tin!");
       setLoading(false);
-    }, 1000);
+      return;
+    }
+
+    try {
+      // 1️⃣ Lấy user từ Supabase theo username
+      const { data: user, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("username", username)
+        .maybeSingle();
+
+      if (error) throw error;
+      if (!user) {
+        alert("❌ Tên đăng nhập không tồn tại!");
+        setLoading(false);
+        return;
+      }
+
+      // 2️⃣ Kiểm tra password
+      if (user.password !== password) {
+        alert("❌ Mật khẩu không đúng!");
+        setLoading(false);
+        return;
+      }
+
+      // 3️⃣ Login thành công
+      const userData = { username: user.username, role: user.role };
+      localStorage.setItem("user", JSON.stringify(userData));
+      if (onLogin) onLogin(userData); // cập nhật Layout liền
+      alert("✅ Đăng nhập thành công!");
+      navigate("/");
+    } catch (err) {
+      alert("❌ Lỗi: " + err.message);
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -34,7 +61,6 @@ const LoginPage = () => {
       <div className="login-card">
         <img src={anhlogo1} alt="Logo" className="login-logo" />
         <h2 className="login-title">Đăng nhập vào tài khoản</h2>
-        <p className="login-subtitle">Sử dụng tài khoản của bạn để tiếp tục</p>
 
         <form onSubmit={handleLogin} className="login-form">
           <div className="form-group">
@@ -63,7 +89,7 @@ const LoginPage = () => {
         </form>
 
         <p className="register-link">
-          Bạn chưa có tài khoản? <Link to="/register">Tạo tài khoản mới</Link>
+          Bạn chưa có tài khoản? <a href="/register">Tạo tài khoản mới</a>
         </p>
       </div>
     </div>

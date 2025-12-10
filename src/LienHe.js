@@ -1,6 +1,5 @@
 import React from "react";
-import "./assets/css/layout.css";
-
+import "./assets/css/lienhe.css";
 const LienHe = () => {
   return (
     <div className="contact-container">

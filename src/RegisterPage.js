@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import anhlogo1 from "./assets/images/keylogin.png"; // Dùng logo giống login
-import { supabase } from "./supabaseClient"; // Kết nối Supabase
-import "./assets/css/login.css"; // Dùng chung CSS login
+import anhlogo1 from "./assets/images/keylogin.png";
+import { supabase } from "./supabaseClient";
+import "./assets/css/login.css";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("user"); // ⭐ Mặc định user
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -23,19 +24,19 @@ const RegisterPage = () => {
     }
 
     try {
-      // Thêm user vào bảng "users" trong Supabase
-      const { data, error } = await supabase.from("users").insert([
+      // ⭐ Luôn lưu vào bảng users
+      const { error } = await supabase.from("users").insert([
         {
           username,
           email,
-          password, // Chú ý: nếu production, nên hash password trước
-          role: "user",
+          password,
+          role, // ⭐ role = 'admin' hoặc 'user'
         },
       ]);
 
       if (error) throw error;
 
-      alert("✅ Đăng ký thành công! Vui lòng đăng nhập.");
+      alert("✅ Đăng ký thành công!");
       navigate("/login");
     } catch (err) {
       alert("❌ Lỗi: " + err.message);
@@ -50,7 +51,7 @@ const RegisterPage = () => {
         <img src={anhlogo1} alt="Logo" className="login-logo" />
 
         <h2 className="login-title">Tạo tài khoản mới</h2>
-        <p className="login-subtitle">Điền thông tin để đăng ký tài khoản</p>
+        <p className="login-subtitle">Điền thông tin để tạo tài khoản</p>
 
         <form onSubmit={handleRegister} className="login-form">
           <div className="form-group">
@@ -81,6 +82,15 @@ const RegisterPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+          </div>
+
+          {/* ⭐⭐ NÚT CHỌN PHÂN QUYỀN ⭐⭐ */}
+          <div className="form-group">
+            <label>Phân quyền</label>
+            <select value={role} onChange={(e) => setRole(e.target.value)}>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
           </div>
 
           <button type="submit" disabled={loading}>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 import { useNavigate, useParams } from "react-router-dom";
-import "./assets/css/quanlysp.css";
+import "./assets/css/themsanpham.css";
 
 const EditProduct = () => {
   const { id } = useParams();

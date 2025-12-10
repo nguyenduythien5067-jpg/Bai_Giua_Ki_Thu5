@@ -35,6 +35,8 @@ import ListProducts_SP_Admin from "./ListProducts_SP_Admin";
 //@ts-ignore
 import EditProduct from "./EditProduct";
 import ChatPage from "./ChatPage"; // ✅ Import trang Chat
+//@ts-ignore
+import OrderInfoPage from "./OrderInfoPage";
 
 // --- IMPORT MỚI CHO GIỎ HÀNG ---
 import { CartProvider } from "./CartContext"; // Context vừa sửa ở Bước 1
@@ -51,11 +53,11 @@ const App = () => {
             <Route index element={<ListProducts_SP />} />
             {/* ✅ 2. Thêm Route cho Giỏ Hàng */}
             <Route path="cart" element={<CartPage />} />
-
+            <Route path="/order-info" element={<OrderInfoPage />} />
             <Route path="chat" element={<ChatPage />} />
             <Route path="detail/:id" element={<ProductDetail />} />
             <Route path="trang1" element={<Trang1 />} />
-            <Route path="sanpham/:id" element={<Chitietsanpham />} />
+            <Route path="sanpham/:id" element={<ProductDetail />} />
             <Route path="trang2" element={<Trang2 />} />
             <Route path="gioi-thieu" element={<GioiThieu />} />
             <Route path="lien-he" element={<LienHe />} />

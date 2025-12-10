@@ -1,6 +1,5 @@
-// src/CartPage.tsx
-import React from "react";
-import { useCart } from "./CartContext";
+import React, { useState } from "react";
+import { useCart } from "./CartContext"; // Import CartContext để lấy thông tin giỏ hàng
 import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
@@ -10,10 +9,13 @@ export default function CartPage() {
     removeFromCart,
     increaseQuantity,
     decreaseQuantity,
+    clearCart, // <-- hàm xóa giỏ hàng không cần dùng nữa
   } = useCart();
 
   const navigate = useNavigate();
+  const [showSuccess, setShowSuccess] = useState(false);
 
+  // Nếu giỏ hàng trống, hiển thị thông báo giỏ hàng trống
   if (cartItems.length === 0)
     return (
       <div style={styles.cartEmpty as React.CSSProperties}>
@@ -26,6 +28,18 @@ export default function CartPage() {
         </button>
       </div>
     );
+
+  // Xử lý thanh toán (Không xóa giỏ hàng)
+  const handleCheckout = () => {
+    setShowSuccess(true);
+
+    // Không xóa giỏ hàng sau thanh toán
+
+    // Tự chuyển trang sau 1.5s
+    setTimeout(() => {
+      navigate("/order-info"); // Chuyển đến trang thông tin đơn hàng
+    }, 1500);
+  };
 
   return (
     <div style={styles.cartContainer as React.CSSProperties}>
@@ -54,10 +68,10 @@ export default function CartPage() {
                 />
                 <span>{item.product.title}</span>
               </td>
-              <td style={{ textAlign: "center" } as React.CSSProperties}>
-                ${item.product.price}
-              </td>
-              <td style={{ textAlign: "center" } as React.CSSProperties}>
+
+              <td style={{ textAlign: "center" }}>{item.product.price}$</td>
+
+              <td style={{ textAlign: "center" }}>
                 <div style={styles.qtyControls as React.CSSProperties}>
                   <button
                     style={styles.qtyBtn as React.CSSProperties}
@@ -65,7 +79,9 @@ export default function CartPage() {
                   >
                     -
                   </button>
+
                   <span>{item.quantity}</span>
+
                   <button
                     style={styles.qtyBtn as React.CSSProperties}
                     onClick={() => increaseQuantity(item.product.id)}
@@ -74,17 +90,17 @@ export default function CartPage() {
                   </button>
                 </div>
               </td>
+
               <td
-                style={
-                  {
-                    textAlign: "center",
-                    fontWeight: "bold",
-                  } as React.CSSProperties
-                }
+                style={{
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
               >
-                ${(item.product.price * item.quantity).toFixed(2)}
+                {(item.product.price * item.quantity).toFixed(2)}$
               </td>
-              <td style={{ textAlign: "center" } as React.CSSProperties}>
+
+              <td style={{ textAlign: "center" }}>
                 <button
                   onClick={() => removeFromCart(item.product.id)}
                   style={styles.removeBtn as React.CSSProperties}
@@ -104,23 +120,47 @@ export default function CartPage() {
         >
           ⬅ Tiếp tục mua hàng
         </button>
+
         <div style={styles.totalSection as React.CSSProperties}>
           <h3>
             Tổng cộng:{" "}
             <span style={styles.totalPrice as React.CSSProperties}>
-              ${totalPrice.toFixed(2)}
+              {totalPrice.toFixed(2)}$
             </span>
           </h3>
-          <button style={styles.btnPrimary as React.CSSProperties}>
+
+          <button
+            style={styles.btnPrimary as React.CSSProperties}
+            onClick={handleCheckout}
+          >
             Thanh toán ngay
           </button>
         </div>
       </div>
+
+      {/* Popup Thanh Toán Thành Công */}
+      {showSuccess && (
+        <div style={styles.successOverlay as React.CSSProperties}>
+          <div style={styles.successBox as React.CSSProperties}>
+            <h3>🎉 Thanh toán thành công!</h3>
+            <p>Cảm ơn bạn đã mua hàng tại cửa hàng của chúng tôi.</p>
+
+            <button
+              style={styles.btnPrimary as React.CSSProperties}
+              onClick={() => navigate("/order-info")}
+            >
+              Xem thông tin đơn hàng
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
-// --- Inline Styles ---
+// -------------------------
+// STYLE FULL 100%
+// -------------------------
 const styles = {
   cartContainer: {
     maxWidth: 1000,
@@ -129,7 +169,9 @@ const styles = {
     backgroundColor: "#f7f8fa",
     fontFamily: "Segoe UI, Roboto, sans-serif",
   },
+
   cartTitle: { fontSize: 24, marginBottom: 25, color: "#333" },
+
   cartTable: {
     width: "100%",
     borderCollapse: "collapse",
@@ -138,7 +180,9 @@ const styles = {
     overflow: "hidden",
     boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
   },
+
   productCell: { display: "flex", alignItems: "center", gap: 12, padding: 12 },
+
   productImg: {
     width: 60,
     height: 60,
@@ -148,22 +192,25 @@ const styles = {
     padding: 5,
     boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
   },
+
   qtyControls: {
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    gap: 5,
+    gap: 8,
   },
+
   qtyBtn: {
-    width: 30,
-    height: 30,
+    width: 28,
+    height: 28,
     cursor: "pointer",
     backgroundColor: "#f0f0f0",
     border: "1px solid #ccc",
     borderRadius: 6,
     fontWeight: "bold",
-    transition: "all 0.2s",
+    transition: "0.2s",
   },
+
   removeBtn: {
     color: "red",
     background: "none",
@@ -171,16 +218,22 @@ const styles = {
     cursor: "pointer",
     fontSize: 18,
   },
+
   checkoutSection: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "flex-end",
     marginTop: 30,
     paddingTop: 20,
     borderTop: "1px solid #eee",
   },
+
   totalSection: { textAlign: "right" },
-  totalPrice: { color: "#d32f2f", fontSize: "1.2em" },
+
+  totalPrice: {
+    color: "#d32f2f",
+    fontSize: "1.3em",
+  },
+
   btnPrimary: {
     padding: "12px 24px",
     background: "#28a745",
@@ -190,8 +243,9 @@ const styles = {
     fontSize: 16,
     fontWeight: "bold",
     cursor: "pointer",
-    boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
   },
+
   btnSecondary: {
     padding: "10px 20px",
     background: "white",
@@ -201,9 +255,34 @@ const styles = {
     cursor: "pointer",
     fontWeight: 500,
   },
+
   cartEmpty: {
     textAlign: "center",
     marginTop: 50,
     fontFamily: "Segoe UI, Roboto, sans-serif",
+  },
+
+  // Popup
+  successOverlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    background: "rgba(0,0,0,0.4)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 9999,
+  },
+
+  successBox: {
+    background: "#fff",
+    padding: "30px 40px",
+    borderRadius: 12,
+    textAlign: "center",
+    width: 350,
+    boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
+    animation: "fadeIn 0.3s ease",
   },
 };
