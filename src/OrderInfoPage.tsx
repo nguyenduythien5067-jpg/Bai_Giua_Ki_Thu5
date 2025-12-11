@@ -106,6 +106,16 @@ export default function OrderInfoPage() {
         >
           🛒 Quay lại giỏ hàng
         </button>
+        <button
+  style={{
+    ...styles.btnPrimary,
+    background: "#4caf50", // xanh lá
+  }}
+  onClick={() => navigate("/payment")}
+>
+  💳 Thanh toán ngay
+</button>
+
       </div>
     </div>
   );

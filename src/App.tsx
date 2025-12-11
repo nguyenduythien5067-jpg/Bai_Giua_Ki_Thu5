@@ -37,7 +37,9 @@ import EditProduct from "./EditProduct";
 import ChatPage from "./ChatPage"; // ✅ Import trang Chat
 //@ts-ignore
 import OrderInfoPage from "./OrderInfoPage";
-
+//@ts-ignore
+import PaymentPage from "./PaymentPage";
+import SuccessPage from "./SuccessPage";
 // --- IMPORT MỚI CHO GIỎ HÀNG ---
 import { CartProvider } from "./CartContext"; // Context vừa sửa ở Bước 1
 import CartPage from "./CartPage"; // Trang hiển thị giỏ hàng (Xem bước 3)
@@ -63,7 +65,8 @@ const App = () => {
             <Route path="lien-he" element={<LienHe />} />
             <Route path="/admin/edit/:id" element={<EditProduct />} />
             <Route path="register" element={<RegisterPage />} />
-
+            <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/success" element={<SuccessPage />} />
             {/* ✅ Trang đăng nhập (nằm trong Layout) */}
             <Route path="login" element={<LoginPage />} />
 
